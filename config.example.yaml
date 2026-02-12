@@ -1,0 +1,41 @@
+# Sentinel-12 Security Protocol
+# Copy this file to pentest-config.yaml and update with your values
+
+# Base URL of the application to test
+base_url: "http://127.0.0.1:8000"
+
+# Session cookies for different user roles
+# To get session cookies:
+# 1. Login to the application
+# 2. Open browser DevTools (F12)
+# 3. Go to Application/Storage > Cookies
+# 4. Copy the 'laravel_session' cookie value
+
+# Admin user session (full privileges)
+admin_session: "PASTE_ADMIN_SESSION_COOKIE_HERE"
+
+# Regular user A session (standard user)
+user_a_session: "PASTE_USER_A_SESSION_COOKIE_HERE"
+
+# Regular user B session (different standard user for horizontal escalation tests)
+user_b_session: "PASTE_USER_B_SESSION_COOKIE_HERE"
+
+# Agency A user session (for multi-tenancy tests)
+agency_a_session: "PASTE_AGENCY_A_SESSION_COOKIE_HERE"
+
+# Agency B user session (for multi-tenancy tests)
+agency_b_session: "PASTE_AGENCY_B_SESSION_COOKIE_HERE"
+
+# Verbose output (shows detailed request/response info)
+verbose: false
+
+# Test configuration
+test_config:
+  # Maximum requests per rate limit test
+  max_rate_limit_requests: 100
+  
+  # Timeout for requests (seconds)
+  request_timeout: 10
+  
+  # Delay between requests (seconds)
+  request_delay: 0.1

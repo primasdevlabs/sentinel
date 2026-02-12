@@ -3,7 +3,7 @@ Module 8: Cryptography & Secrets Management
 Tests cryptographic implementations and secrets handling
 """
 
-from pentest.base_test import BaseSecurityTest, Severity
+from sentinel.base_test import BaseSecurityTest, Severity
 
 
 class CryptoSecurityTests(BaseSecurityTest):

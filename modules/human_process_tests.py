@@ -3,7 +3,7 @@ Module 12: Human-Driven & Process Attacks
 Tests for human errors and process vulnerabilities
 """
 
-from pentest.base_test import BaseSecurityTest, Severity
+from sentinel.base_test import BaseSecurityTest, Severity
 
 
 class HumanProcessTests(BaseSecurityTest):

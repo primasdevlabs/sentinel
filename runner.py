@@ -10,19 +10,19 @@ from datetime import datetime
 from typing import Dict, List
 import yaml
 
-from pentest.base_test import Severity, Finding
-from pentest.modules.iam_tests import IAMSecurityTests
-from pentest.modules.rbac_tests import RBACSecurityTests
-from pentest.modules.multitenancy_tests import MultiTenancyTests
-from pentest.modules.business_logic_tests import BusinessLogicTests
-from pentest.modules.file_security_tests import FileSecurityTests
-from pentest.modules.api_security_tests import APISecurityTests
-from pentest.modules.rate_limit_tests import RateLimitTests
-from pentest.modules.crypto_tests import CryptoSecurityTests
-from pentest.modules.audit_tests import AuditSecurityTests
-from pentest.modules.supply_chain_tests import SupplyChainTests
-from pentest.modules.infrastructure_tests import InfrastructureTests
-from pentest.modules.human_process_tests import HumanProcessTests
+from sentinel.base_test import Severity, Finding
+from sentinel.modules.iam_tests import IAMSecurityTests
+from sentinel.modules.rbac_tests import RBACSecurityTests
+from sentinel.modules.multitenancy_tests import MultiTenancyTests
+from sentinel.modules.business_logic_tests import BusinessLogicTests
+from sentinel.modules.file_security_tests import FileSecurityTests
+from sentinel.modules.api_security_tests import APISecurityTests
+from sentinel.modules.rate_limit_tests import RateLimitTests
+from sentinel.modules.crypto_tests import CryptoSecurityTests
+from sentinel.modules.audit_tests import AuditSecurityTests
+from sentinel.modules.supply_chain_tests import SupplyChainTests
+from sentinel.modules.infrastructure_tests import InfrastructureTests
+from sentinel.modules.human_process_tests import HumanProcessTests
 
 
 class SecurityTestSuite:

@@ -3,7 +3,7 @@ Module 5: File & Document Security
 Tests file upload validation, storage security, and document handling
 """
 
-from pentest.base_test import BaseSecurityTest, Severity
+from sentinel.base_test import BaseSecurityTest, Severity
 import io
 
 

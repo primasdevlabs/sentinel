@@ -3,7 +3,7 @@ Module 10: Supply Chain & Dependency Risk
 Tests dependency security and supply chain integrity
 """
 
-from pentest.base_test import BaseSecurityTest, Severity
+from sentinel.base_test import BaseSecurityTest, Severity
 import subprocess
 
 

@@ -3,7 +3,7 @@ Module 11: Infrastructure & Deployment Security
 Tests infrastructure configuration and deployment security
 """
 
-from pentest.base_test import BaseSecurityTest, Severity
+from sentinel.base_test import BaseSecurityTest, Severity
 
 
 class InfrastructureTests(BaseSecurityTest):

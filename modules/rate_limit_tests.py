@@ -3,7 +3,7 @@ Module 7: Rate Limiting & Abuse Controls
 Tests rate limiting, throttling, and abuse prevention mechanisms
 """
 
-from pentest.base_test import BaseSecurityTest, Severity
+from sentinel.base_test import BaseSecurityTest, Severity
 import time
 
 

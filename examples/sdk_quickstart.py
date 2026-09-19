@@ -17,8 +17,8 @@ def main():
     print("SENTINEL-12 PYTHON SDK DEMO")
     print("=" * 60)
 
-    # Initialize SDK Client
-    client = SentinelClient(base_url="http://127.0.0.1:8000", verbose=True)
+    target_url = os.getenv("SENTINEL_BASE_URL", "http://127.0.0.1:8000")
+    client = SentinelClient(base_url=target_url, verbose=True)
 
     # Configure session cookies for role testing
     client.set_session("admin", "admin_cookie_token_sample")

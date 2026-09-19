@@ -25,7 +25,7 @@ class SentinelConfig:
     
     def __init__(
         self,
-        base_url: str = "http://127.0.0.1:8000",
+        base_url: Optional[str] = None,
         admin_session: Optional[str] = None,
         user_a_session: Optional[str] = None,
         user_b_session: Optional[str] = None,
@@ -35,13 +35,22 @@ class SentinelConfig:
         timeout: int = 10,
         delay: float = 0.1
     ):
-        self.base_url = base_url.rstrip('/')
-        self.admin_session = admin_session
-        self.user_a_session = user_a_session
-        self.user_b_session = user_b_session
-        self.agency_a_session = agency_a_session
-        self.agency_b_session = agency_b_session
-        self.verbose = verbose
+        env_config = load_config()
+        target_url = base_url or os.getenv('SENTINEL_BASE_URL') or env_config.get('base_url')
+        
+        if not target_url:
+            raise ValueError(
+                "No target URL specified. Please pass base_url or set the SENTINEL_BASE_URL "
+                "environment variable or define base_url in a .sentinel / config.yaml file."
+            )
+            
+        self.base_url = target_url.rstrip('/')
+        self.admin_session = admin_session or os.getenv('SENTINEL_ADMIN_SESSION') or env_config.get('admin_session')
+        self.user_a_session = user_a_session or os.getenv('SENTINEL_USER_A_SESSION') or env_config.get('user_a_session')
+        self.user_b_session = user_b_session or os.getenv('SENTINEL_USER_B_SESSION') or env_config.get('user_b_session')
+        self.agency_a_session = agency_a_session or os.getenv('SENTINEL_AGENCY_A_SESSION') or env_config.get('agency_a_session')
+        self.agency_b_session = agency_b_session or os.getenv('SENTINEL_AGENCY_B_SESSION') or env_config.get('agency_b_session')
+        self.verbose = verbose or (os.getenv('SENTINEL_VERBOSE', '').lower() in ('true', '1')) or env_config.get('verbose', False)
         self.timeout = timeout
         self.delay = delay
 
@@ -69,7 +78,7 @@ class SentinelClient:
     ```python
     from sentinel_sdk import SentinelClient
     
-    client = SentinelClient(base_url="http://127.0.0.1:8000")
+    client = SentinelClient(base_url="https://target.app")
     client.set_session('admin', 'admin_session_cookie')
     client.run_all()
     
@@ -80,12 +89,14 @@ class SentinelClient:
     
     def __init__(
         self,
-        base_url: str = "http://127.0.0.1:8000",
+        base_url: Optional[str] = None,
         config_file: Optional[str] = None,
         verbose: bool = False
     ):
         if config_file:
             raw_config = load_config(config_file)
+            if base_url:
+                raw_config['base_url'] = base_url
             self.config = raw_config
         else:
             self.config = SentinelConfig(base_url=base_url, verbose=verbose).to_dict()

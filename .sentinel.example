@@ -1,0 +1,16 @@
+# Sentinel-12 Security Suite Custom Configuration File (.sentinel)
+# You can rename this file to .sentinel or config.yaml in your project root.
+
+base_url: "https://your-target-app.example.com"
+
+# Session Cookies (Leave empty or set via environment variables SENTINEL_*_SESSION)
+admin_session: "your_admin_session_cookie"
+user_a_session: "your_user_a_session_cookie"
+user_b_session: "your_user_b_session_cookie"
+agency_a_session: "your_agency_a_session_cookie"
+agency_b_session: "your_agency_b_session_cookie"
+
+# Global Test Flags
+verbose: false
+request_timeout: 10
+request_delay: 0.1

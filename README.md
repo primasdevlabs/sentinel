@@ -78,22 +78,44 @@ pip install requests pyyaml
 
 ### 2. Configuration
 
-Copy the example configuration file and fill in your target settings and session cookies:
+Sentinel-12 supports **Environment Variables**, a **Custom `.sentinel` Config File**, `.env` files, or `config.yaml`.
+
+#### Option A: Environment Variables (Recommended for CI/CD)
 
 ```bash
-cp config.example.yaml config.yaml
+export SENTINEL_BASE_URL="https://your-target-app.example.com"
+export SENTINEL_ADMIN_SESSION="your_admin_session_cookie"
+export SENTINEL_USER_A_SESSION="your_user_a_session_cookie"
 ```
 
-Update `config.yaml` with valid target URL and session tokens:
+#### Option B: Custom `.sentinel` Config File
+
+Copy the template to create a `.sentinel` file in your root directory (automatically discovered):
+
+```bash
+cp .sentinel.example .sentinel
+```
 
 ```yaml
-base_url: "http://127.0.0.1:8000"
+# .sentinel
+base_url: "https://your-target-app.example.com"
 admin_session: "your_admin_session_cookie"
 user_a_session: "your_user_a_session_cookie"
 user_b_session: "your_user_b_session_cookie"
 agency_a_session: "your_agency_a_session_cookie"
 agency_b_session: "your_agency_b_session_cookie"
+verbose: false
 ```
+
+#### Option C: `.env` File
+
+Copy `.env.example` to `.env`:
+
+```bash
+cp .env.example .env
+```
+
+---
 
 ### 3. Running Tests
 

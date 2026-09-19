@@ -14,8 +14,7 @@ def sentinel_client():
     Pytest fixture supplying an initialized SentinelClient.
     Reads SENTINEL_BASE_URL and SENTINEL_CONFIG env variables if present.
     """
-    base_url = os.environ.get("SENTINEL_BASE_URL", "http://127.0.0.1:8000")
-    config_file = os.environ.get("SENTINEL_CONFIG", None)
+    base_url = os.environ.get("SENTINEL_BASE_URL")
+    config_file = os.environ.get("SENTINEL_CONFIG") or os.environ.get("SENTINEL_CONFIG_FILE")
     
-    client = SentinelClient(base_url=base_url, config_file=config_file)
-    return client
+    return SentinelClient(base_url=base_url, config_file=config_file)

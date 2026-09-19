@@ -415,32 +415,91 @@ class SecurityTestSuite:
         print(f"[+] HTML report exported to: {filename}")
 
 
+def load_env_file(filepath: str) -> Dict[str, str]:
+    """Parse a .env or key-value format file into a dictionary"""
+    env_vars = {}
+    if not os.path.exists(filepath):
+        return env_vars
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith('#') or '=' not in line:
+                    continue
+                key, val = line.split('=', 1)
+                key = key.strip()
+                val = val.strip().strip('"').strip("'")
+                env_vars[key] = val
+    except Exception:
+        pass
+    return env_vars
+
+
 def load_config(config_file: Optional[str] = None) -> Dict:
-    """Load configuration from file or use defaults"""
-    if config_file:
-        with open(config_file, 'r') as f:
-            if config_file.endswith('.yaml') or config_file.endswith('.yml'):
-                return yaml.safe_load(f)
-            else:
-                return json.load(f)
+    """
+    Load configuration from custom file (.sentinel, config.yaml, .env) or environment variables.
+    Environment variables override file settings.
+    """
+    config: Dict[str, Any] = {}
     
-    # Default configuration
-    return {
-        'base_url': 'http://127.0.0.1:8000',
-        'admin_session': None,
-        'user_a_session': None,
-        'user_b_session': None,
-        'agency_a_session': None,
-        'agency_b_session': None,
-        'verbose': False
-    }
+    # Auto-load root .env file into environment if present
+    if os.path.exists('.env'):
+        dotenv_vars = load_env_file('.env')
+        for k, v in dotenv_vars.items():
+            if k not in os.environ:
+                os.environ[k] = v
+
+    # 1. Discover config file if not explicitly specified
+    target_file = config_file or os.getenv('SENTINEL_CONFIG_FILE')
+    if not target_file:
+        candidates = ['.sentinel', 'sentinel.config.yaml', 'sentinel.config.json', '.sentinel.yaml', '.sentinel.json', 'config.yaml', 'config.json']
+        for candidate in candidates:
+            if os.path.exists(candidate):
+                target_file = candidate
+                break
+
+    # 2. Parse config file if found
+    if target_file and os.path.exists(target_file):
+        with open(target_file, 'r', encoding='utf-8') as f:
+            content = f.read().strip()
+            if target_file.endswith('.json') or (content.startswith('{') and content.endswith('}')):
+                config = json.loads(content)
+            else:
+                config = yaml.safe_load(content) or {}
+                
+    # 3. Apply Environment Variable Overrides (Highest Precedence)
+    if os.getenv('SENTINEL_BASE_URL'):
+        config['base_url'] = os.getenv('SENTINEL_BASE_URL')
+    if os.getenv('SENTINEL_ADMIN_SESSION'):
+        config['admin_session'] = os.getenv('SENTINEL_ADMIN_SESSION')
+    if os.getenv('SENTINEL_USER_A_SESSION'):
+        config['user_a_session'] = os.getenv('SENTINEL_USER_A_SESSION')
+    if os.getenv('SENTINEL_USER_B_SESSION'):
+        config['user_b_session'] = os.getenv('SENTINEL_USER_B_SESSION')
+    if os.getenv('SENTINEL_AGENCY_A_SESSION'):
+        config['agency_a_session'] = os.getenv('SENTINEL_AGENCY_A_SESSION')
+    if os.getenv('SENTINEL_AGENCY_B_SESSION'):
+        config['agency_b_session'] = os.getenv('SENTINEL_AGENCY_B_SESSION')
+    if os.getenv('SENTINEL_VERBOSE') is not None:
+        config['verbose'] = os.getenv('SENTINEL_VERBOSE', '').lower() in ('true', '1', 'yes')
+
+    # Defaults fallback
+    config.setdefault('base_url', None)
+    config.setdefault('admin_session', None)
+    config.setdefault('user_a_session', None)
+    config.setdefault('user_b_session', None)
+    config.setdefault('agency_a_session', None)
+    config.setdefault('agency_b_session', None)
+    config.setdefault('verbose', False)
+
+    return config
 
 
 def main():
     parser = argparse.ArgumentParser(
         description='Sentinel-12 Security Protocol'
     )
-    parser.add_argument('--config', '-c', help='Configuration file (YAML or JSON)')
+    parser.add_argument('--config', '-c', help='Configuration file (.sentinel, YAML, JSON, or .env)')
     parser.add_argument('--modules', '-m', nargs='+', 
                        help='Specific modules to run (default: all)')
     parser.add_argument('--output', '-o', help='Output file for report')
@@ -455,6 +514,17 @@ def main():
     config = load_config(args.config)
     if args.verbose:
         config['verbose'] = True
+
+    # Enforce base_url presence
+    if not config.get('base_url'):
+        sys.exit(
+            "Error: No target URL specified.\n"
+            "Please specify base_url using one of the following methods:\n"
+            "  1. Environment variable: SENTINEL_BASE_URL=https://target-app.example.com\n"
+            "  2. Custom config file: .sentinel or config.yaml (base_url: 'https://target-app.example.com')\n"
+            "  3. Dotenv file: .env (SENTINEL_BASE_URL=https://target-app.example.com)\n"
+            "  4. CLI argument: --config path/to/config.yaml"
+        )
     
     # Run tests
     suite = SecurityTestSuite(config)

@@ -55,7 +55,7 @@ class SecurityTestSuite:
         self.start_time = datetime.now()
         
         print("\n" + "="*70)
-        print("🔒 ENTERPRISE SECURITY TEST SUITE - AGENTCORE CRM")
+        print("🔒 SENTINEL-12 ENTERPRISE SECURITY SUITE")
         print("="*70)
         print(f"Target: {self.config['base_url']}")
         print(f"Started: {self.start_time.strftime('%Y-%m-%d %H:%M:%S')}")
@@ -248,7 +248,7 @@ class SecurityTestSuite:
         <div class="header">
             <div>
                 <h1>🔒 Security Test Report</h1>
-                <p class="subtitle">Sentinel-12 Security Protocol • AgentCore CRM</p>
+                <p class="subtitle">Sentinel-12 Security Protocol • Enterprise Security Audit</p>
             </div>
             <div class="header-status">
                 <div class="header-status-label">Risk Score</div>

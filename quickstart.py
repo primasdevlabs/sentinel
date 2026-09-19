@@ -4,38 +4,54 @@ Run this to see available commands and examples
 """
 
 QUICK_START = """
-╔══════════════════════════════════════════════════════════════╗
-║   Sentinel-12 Security Protocol - Quick Reference          ║
-╚══════════════════════════════════════════════════════════════╝
+==============================================================
+  Sentinel-12 Security Protocol - Quick Reference
+==============================================================
 
-📋 SETUP (First Time)
+WARNING: MUST ONLY BE TESTED ON YOUR OWN DOMAIN, YOUR OWN APPLICATION,
+OR TARGETS WHERE YOU HAVE WRITTEN PERMISSION FOR SECURITY AUDITING.
+
+SETUP (First Time)
 ──────────────────────────────────────────────────────────────
 1. Copy configuration template:
-   cp pentest/config.example.yaml pentest/config.yaml
+   cp config.example.yaml config.yaml
 
-2. Edit config.yaml and add your session cookies:
-   - Login to the app
-   - Open DevTools (F12) → Application → Cookies
-   - Copy 'laravel_session' cookie value
+2. Edit config.yaml with YOUR application URL and session cookies:
+   - Login to YOUR application
+   - Open DevTools (F12) -> Application -> Cookies
+   - Copy session cookie value
 
-3. Update config.yaml with your sessions
+3. Update config.yaml with your authorized target settings
 
-🚀 BASIC USAGE
+BASIC USAGE (CLI)
 ──────────────────────────────────────────────────────────────
-# Run all tests
-python -m pentest.runner --config pentest/config.yaml
+# Run all 12 security modules
+python runner.py --config config.yaml
 
 # Run specific modules
-python -m pentest.runner --config pentest/config.yaml --modules iam rbac
+python runner.py --config config.yaml --modules iam rbac business_logic
 
 # Generate HTML report
-python -m pentest.runner --config pentest/config.yaml \\
-  --output report.html --format html
+python runner.py --config config.yaml --output report.html --format html
 
 # Verbose mode (detailed output)
-python -m pentest.runner --config pentest/config.yaml --verbose
+python runner.py --config config.yaml --verbose
 
-📦 AVAILABLE MODULES
+REACT WEB DASHBOARD (DEFCON 1 SITUATION ROOM)
+──────────────────────────────────────────────────────────────
+# Option A: Run production web dashboard server via Python
+python web_server.py
+
+# Option B: Build React frontend assets manually
+cd frontend
+npm install
+npm run build
+
+# Option C: Run React development server
+cd frontend
+npm run dev
+
+AVAILABLE MODULES (12 SECTORS)
 ──────────────────────────────────────────────────────────────
 iam              - Identity, Auth & Session Security
 rbac             - Authorization & RBAC Integrity
@@ -50,48 +66,11 @@ supply_chain     - Supply Chain & Dependency Risk
 infrastructure   - Infrastructure & Deployment Security
 human_process    - Human-Driven & Process Attacks
 
-🎯 COMMON SCENARIOS
+MORE INFO
 ──────────────────────────────────────────────────────────────
-# Quick security check (critical modules only)
-python -m pentest.runner --config pentest/config.yaml \\
-  --modules iam rbac multitenancy business_logic
-
-# Full audit with HTML report
-python -m pentest.runner --config pentest/config.yaml \\
-  --output security-audit-$(date +%Y%m%d).html \\
-  --format html
-
-# API-focused testing
-python -m pentest.runner --config pentest/config.yaml \\
-  --modules api_security rate_limit file_security
-
-# Infrastructure audit
-python -m pentest.runner --config pentest/config.yaml \\
-  --modules infrastructure supply_chain crypto
-
-📊 UNDERSTANDING RESULTS
-──────────────────────────────────────────────────────────────
-🔥 CRITICAL  - Immediate action required (auth bypass, data exposure)
-🚨 HIGH      - Urgent attention needed (privilege escalation)
-⚠️  MEDIUM   - Should be addressed (missing rate limits)
-ℹ️  LOW      - Minor issues (sequential IDs)
-💡 INFO      - Informational (manual verification needed)
-✅ PASSED    - Security control working correctly
-
-Risk Score = (CRITICAL × 10) + (HIGH × 5) + (MEDIUM × 2) + (LOW × 1)
-
-⚠️  WARNINGS
-──────────────────────────────────────────────────────────────
-❌ NEVER run against production without authorization
-❌ Tests may trigger security alerts
-❌ Some tests may temporarily lock accounts
-✅ Always use dedicated test accounts
-✅ Run in staging/test environment only
-
-📚 MORE INFO
-──────────────────────────────────────────────────────────────
-Full documentation: pentest/README.md
-Configuration help: pentest/config.example.yaml
+Full documentation: README.md
+Contribution guide: CONTRIBUTING.md
+Security policy: SECURITY.md
 """
 
 if __name__ == '__main__':

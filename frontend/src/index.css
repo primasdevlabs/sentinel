@@ -1,0 +1,269 @@
+:root {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #141414;
+  --bg-card: #171717;
+  --bg-card-hover: #262626;
+  --border-color: #333333;
+  --border-color-hover: #525252;
+  
+  --text-primary: #f5f5f5;
+  --text-secondary: #a3a3a3;
+  --text-muted: #737373;
+
+  --defcon-1: #dc2626;
+  --defcon-1-bg: #2b1212;
+  --defcon-1-border: #991b1b;
+  
+  --defcon-2: #ea580c;
+  --defcon-2-bg: #2b170c;
+  --defcon-2-border: #9a3412;
+  
+  --defcon-3: #d97706;
+  --defcon-3-bg: #2a200a;
+  --defcon-3-border: #92400e;
+  
+  --defcon-4: #71717a;
+  --defcon-4-bg: #262626;
+  --defcon-4-border: #52525b;
+
+  --defcon-5: #16a34a;
+  --defcon-5-bg: #0d2818;
+  --defcon-5-border: #15803d;
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Outfit', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: #262626;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #404040;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Flat Tactical Panel */
+.glass-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+}
+
+.glass-panel-hover:hover {
+  border-color: var(--border-color-hover);
+  background: var(--bg-card-hover);
+}
+
+/* Tactical Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.125rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-family: var(--font-mono);
+  border: 1px solid transparent;
+}
+
+.badge-critical {
+  background: var(--defcon-1-bg);
+  color: #fca5a5;
+  border-color: var(--defcon-1-border);
+}
+
+.badge-high {
+  background: var(--defcon-2-bg);
+  color: #fdba74;
+  border-color: var(--defcon-2-border);
+}
+
+.badge-medium {
+  background: var(--defcon-3-bg);
+  color: #fde047;
+  border-color: var(--defcon-3-border);
+}
+
+.badge-low {
+  background: var(--defcon-4-bg);
+  color: #f5f5f5;
+  border-color: var(--defcon-4-border);
+}
+
+.badge-info {
+  background: #1e293b;
+  color: #cbd5e1;
+  border-color: #334155;
+}
+
+.badge-passed {
+  background: var(--defcon-5-bg);
+  color: #86efac;
+  border-color: var(--defcon-5-border);
+}
+
+/* Tactical Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid transparent;
+  outline: none;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: var(--font-mono);
+}
+
+.btn-primary {
+  background: #16a34a;
+  color: #ffffff;
+  border-color: #15803d;
+}
+
+.btn-primary:hover {
+  background: #15803d;
+}
+
+.btn-secondary {
+  background: #262626;
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+.btn-secondary:hover {
+  background: #404040;
+  border-color: #525252;
+}
+
+.btn-danger {
+  background: #dc2626;
+  color: #ffffff;
+  border-color: #991b1b;
+}
+
+.btn-danger:hover {
+  background: #b91c1c;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pulse-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--defcon-5);
+}
+
+/* Tactical Operations Log Terminal */
+.terminal-window {
+  background: #050505;
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+  font-family: var(--font-mono);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.terminal-header {
+  background: #141414;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.terminal-body {
+  padding: 1rem;
+  max-height: 280px;
+  overflow-y: auto;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: #d4d4d4;
+}
+
+.terminal-line {
+  margin-bottom: 0.25rem;
+}
+.terminal-line.critical { color: #f87171; }
+.terminal-line.high { color: #fb923c; }
+.terminal-line.medium { color: #facc15; }
+.terminal-line.passed { color: #4ade80; }
+.terminal-line.info { color: #a3a3a3; }
+
+/* Modal Backdrop */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 650px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #141414;
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+  display: flex;
+  flex-direction: column;
+}

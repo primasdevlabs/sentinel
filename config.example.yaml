@@ -1,7 +1,10 @@
-# Sentinel-12 Security Protocol
-# Copy this file to pentest-config.yaml and update with your values
+# Sentinel-12 Security Protocol Configuration Template
+# COPY THIS FILE TO config.yaml AND UPDATE WITH YOUR AUTHORIZED TARGET VALUES
+#
+# WARNING: MUST ONLY BE TESTED ON YOUR OWN DOMAIN, APPLICATION, OR AUTHORIZED TARGETS.
+# TESTING UNAUTHORIZED THIRD-PARTY DOMAINS IS STRICTLY PROHIBITED AND ILLEGAL.
 
-# Base URL of the application to test
+# Base URL of YOUR application or authorized domain to test
 base_url: "http://127.0.0.1:8000"
 
 # Session cookies for different user roles

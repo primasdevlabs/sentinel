@@ -10,19 +10,34 @@ from datetime import datetime
 from typing import Dict, List
 import yaml
 
-from sentinel.base_test import Severity, Finding
-from sentinel.modules.iam_tests import IAMSecurityTests
-from sentinel.modules.rbac_tests import RBACSecurityTests
-from sentinel.modules.multitenancy_tests import MultiTenancyTests
-from sentinel.modules.business_logic_tests import BusinessLogicTests
-from sentinel.modules.file_security_tests import FileSecurityTests
-from sentinel.modules.api_security_tests import APISecurityTests
-from sentinel.modules.rate_limit_tests import RateLimitTests
-from sentinel.modules.crypto_tests import CryptoSecurityTests
-from sentinel.modules.audit_tests import AuditSecurityTests
-from sentinel.modules.supply_chain_tests import SupplyChainTests
-from sentinel.modules.infrastructure_tests import InfrastructureTests
-from sentinel.modules.human_process_tests import HumanProcessTests
+try:
+    from base_test import Severity, Finding
+    from modules.iam_tests import IAMSecurityTests
+    from modules.rbac_tests import RBACSecurityTests
+    from modules.multitenancy_tests import MultiTenancyTests
+    from modules.business_logic_tests import BusinessLogicTests
+    from modules.file_security_tests import FileSecurityTests
+    from modules.api_security_tests import APISecurityTests
+    from modules.rate_limit_tests import RateLimitTests
+    from modules.crypto_tests import CryptoSecurityTests
+    from modules.audit_tests import AuditSecurityTests
+    from modules.supply_chain_tests import SupplyChainTests
+    from modules.infrastructure_tests import InfrastructureTests
+    from modules.human_process_tests import HumanProcessTests
+except ImportError:
+    from sentinel.base_test import Severity, Finding
+    from sentinel.modules.iam_tests import IAMSecurityTests
+    from sentinel.modules.rbac_tests import RBACSecurityTests
+    from sentinel.modules.multitenancy_tests import MultiTenancyTests
+    from sentinel.modules.business_logic_tests import BusinessLogicTests
+    from sentinel.modules.file_security_tests import FileSecurityTests
+    from sentinel.modules.api_security_tests import APISecurityTests
+    from sentinel.modules.rate_limit_tests import RateLimitTests
+    from sentinel.modules.crypto_tests import CryptoSecurityTests
+    from sentinel.modules.audit_tests import AuditSecurityTests
+    from sentinel.modules.supply_chain_tests import SupplyChainTests
+    from sentinel.modules.infrastructure_tests import InfrastructureTests
+    from sentinel.modules.human_process_tests import HumanProcessTests
 
 
 class SecurityTestSuite:
@@ -55,7 +70,7 @@ class SecurityTestSuite:
         self.start_time = datetime.now()
         
         print("\n" + "="*70)
-        print("🔒 SENTINEL-12 ENTERPRISE SECURITY SUITE")
+        print("[SENTINEL-12 ENTERPRISE SECURITY SUITE]")
         print("="*70)
         print(f"Target: {self.config['base_url']}")
         print(f"Started: {self.start_time.strftime('%Y-%m-%d %H:%M:%S')}")
@@ -65,7 +80,7 @@ class SecurityTestSuite:
         
         for module_name in modules_to_run:
             if module_name not in self.modules:
-                print(f"\n⚠️  Unknown module: {module_name}")
+                print(f"\n[WARNING] Unknown module: {module_name}")
                 continue
             
             module = self.modules[module_name]
@@ -74,7 +89,7 @@ class SecurityTestSuite:
                 module.run_tests()
                 self.all_findings.extend(module.get_findings())
             except Exception as e:
-                print(f"\n❌ Error running {module_name}: {e}")
+                print(f"\n[ERROR] Error running {module_name}: {e}")
         
         self.end_time = datetime.now()
         self.print_summary()
@@ -84,7 +99,7 @@ class SecurityTestSuite:
         duration = (self.end_time - self.start_time).total_seconds()
         
         print("\n" + "="*70)
-        print("📊 TEST SUMMARY")
+        print("[TEST SUMMARY]")
         print("="*70)
         
         # Count findings by severity
@@ -92,12 +107,12 @@ class SecurityTestSuite:
         for finding in self.all_findings:
             severity_counts[finding.severity.value] += 1
         
-        print(f"\n🔥 CRITICAL: {severity_counts['critical']}")
-        print(f"🚨 HIGH:     {severity_counts['high']}")
-        print(f"⚠️  MEDIUM:   {severity_counts['medium']}")
-        print(f"ℹ️  LOW:      {severity_counts['low']}")
-        print(f"💡 INFO:     {severity_counts['info']}")
-        print(f"✅ PASSED:   {severity_counts['passed']}")
+        print(f"\nCRITICAL: {severity_counts['critical']}")
+        print(f"HIGH:     {severity_counts['high']}")
+        print(f"MEDIUM:   {severity_counts['medium']}")
+        print(f"LOW:      {severity_counts['low']}")
+        print(f"INFO:     {severity_counts['info']}")
+        print(f"PASSED:   {severity_counts['passed']}")
         
         print(f"\nTotal Findings: {len(self.all_findings)}")
         print(f"Duration: {duration:.2f} seconds")
@@ -111,16 +126,16 @@ class SecurityTestSuite:
             severity_counts['low'] * 1
         )
         
-        print(f"\n🎯 RISK SCORE: {risk_score}")
+        print(f"\nRISK SCORE: {risk_score}")
         
         if severity_counts['critical'] > 0:
-            print("⚠️  CRITICAL ISSUES FOUND - IMMEDIATE ACTION REQUIRED")
+            print("[CRITICAL] CRITICAL ISSUES FOUND - IMMEDIATE ACTION REQUIRED")
         elif severity_counts['high'] > 0:
-            print("⚠️  HIGH SEVERITY ISSUES FOUND - URGENT ATTENTION NEEDED")
+            print("[HIGH] HIGH SEVERITY ISSUES FOUND - URGENT ATTENTION NEEDED")
         elif severity_counts['medium'] > 0:
-            print("✓ No critical issues, but medium severity findings need attention")
+            print("[+] No critical issues, but medium severity findings need attention")
         else:
-            print("✓ No major security issues detected")
+            print("[+] No major security issues detected")
         
         print("="*70 + "\n")
     
@@ -143,7 +158,7 @@ class SecurityTestSuite:
         with open(filename, 'w') as f:
             json.dump(report, f, indent=2)
         
-        print(f"✅ JSON report exported to: {filename}")
+        print(f"[+] JSON report exported to: {filename}")
     
     def export_html(self, filename: str):
         """Export findings to HTML"""
@@ -408,7 +423,7 @@ class SecurityTestSuite:
         with open(filename, 'w', encoding='utf-8') as f:
             f.write(html_content)
         
-        print(f"✅ HTML report exported to: {filename}")
+        print(f"[+] HTML report exported to: {filename}")
 
 
 def load_config(config_file: str = None) -> Dict:

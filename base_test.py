@@ -122,17 +122,16 @@ class BaseSecurityTest:
         finding = Finding(severity, message, details)
         self.findings.append(finding)
         
-        # Console output
         icons = {
-            Severity.CRITICAL: "🔥",
-            Severity.HIGH: "🚨",
-            Severity.MEDIUM: "⚠️",
-            Severity.LOW: "ℹ️",
-            Severity.INFO: "💡",
-            Severity.PASSED: "✅"
+            Severity.CRITICAL: "[CRITICAL]",
+            Severity.HIGH: "[HIGH]",
+            Severity.MEDIUM: "[MEDIUM]",
+            Severity.LOW: "[LOW]",
+            Severity.INFO: "[INFO]",
+            Severity.PASSED: "[PASSED]"
         }
         
-        icon = icons.get(severity, "📝")
+        icon = icons.get(severity, "[LOG]")
         print(f"{icon} [{severity.value.upper()}] {message}")
         
         if details and self.config.get('verbose', False):

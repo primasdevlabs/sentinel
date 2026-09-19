@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sentinel-security-sdk"
+version = "2.0.0"
+authors = [
+  { name="Primas Dev Labs", email="dev@primasdevlabs.com" },
+]
+description = "Sentinel-12 Security Protocol Python SDK for automated security testing and CI/CD audit integration"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Security",
+    "Topic :: Software Development :: Testing",
+]
+dependencies = [
+    "requests>=2.25.0",
+    "pyyaml>=5.4.1",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/primasdevlabs/sentinel"
+"Bug Tracker" = "https://github.com/primasdevlabs/sentinel/issues"
+
+[project.entry-points."pytest11"]
+sentinel = "sentinel_sdk.pytest_plugin"

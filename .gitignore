@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# Reports generated during tests
+sdk_report.json
+sdk_report.html
+security_report_*.json
+security_report_*.html
+
+# Node
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# IDE & OS
+.DS_Store
+.vscode/
+.idea/

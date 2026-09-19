@@ -3,7 +3,10 @@ Module 2: Authorization & RBAC Integrity
 Tests role-based access control, permission enforcement, and authorization logic
 """
 
-from sentinel.base_test import BaseSecurityTest, Severity
+try:
+    from base_test import BaseSecurityTest, Severity
+except ImportError:
+    from sentinel.base_test import BaseSecurityTest, Severity
 import uuid
 
 

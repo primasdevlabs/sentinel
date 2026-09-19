@@ -3,7 +3,10 @@ Module 9: Logging, Audit & Forensics
 Tests logging, audit trails, and forensic capabilities
 """
 
-from sentinel.base_test import BaseSecurityTest, Severity
+try:
+    from base_test import BaseSecurityTest, Severity
+except ImportError:
+    from sentinel.base_test import BaseSecurityTest, Severity
 
 
 class AuditSecurityTests(BaseSecurityTest):

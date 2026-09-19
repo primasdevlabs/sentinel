@@ -3,7 +3,10 @@ Module 11: Infrastructure & Deployment Security
 Tests infrastructure configuration and deployment security
 """
 
-from sentinel.base_test import BaseSecurityTest, Severity
+try:
+    from base_test import BaseSecurityTest, Severity
+except ImportError:
+    from sentinel.base_test import BaseSecurityTest, Severity
 
 
 class InfrastructureTests(BaseSecurityTest):

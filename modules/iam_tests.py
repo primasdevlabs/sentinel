@@ -3,7 +3,10 @@ Module 1: Identity, Authentication & Session Security (IAM)
 Tests authentication mechanisms, session management, and identity controls
 """
 
-from sentinel.base_test import BaseSecurityTest, Severity
+try:
+    from base_test import BaseSecurityTest, Severity
+except ImportError:
+    from sentinel.base_test import BaseSecurityTest, Severity
 import time
 import uuid
 

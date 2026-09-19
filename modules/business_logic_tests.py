@@ -3,7 +3,10 @@ Module 4: Business Logic & Workflow Integrity
 Tests workflow state machines, business rules, concurrency, parameter tampering, and logic-level vulnerabilities
 """
 
-from sentinel.base_test import BaseSecurityTest, Severity
+try:
+    from base_test import BaseSecurityTest, Severity
+except ImportError:
+    from sentinel.base_test import BaseSecurityTest, Severity
 import time
 import concurrent.futures
 

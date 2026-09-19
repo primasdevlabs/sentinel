@@ -29,3 +29,8 @@ dependencies = [
 
 [project.entry-points."pytest11"]
 sentinel = "sentinel_sdk.pytest_plugin"
+
+[tool.pyright]
+include = ["."]
+extraPaths = ["."]
+

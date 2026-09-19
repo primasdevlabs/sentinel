@@ -31,37 +31,44 @@ class AIPentestEngine:
 
     def _default_model(self, provider: str) -> str:
         if provider == "openai":
-            return "gpt-6-astra"
+            return "gpt-5"
         elif provider in ("anthropic", "claude"):
-            return "fable-5-1"
+            return "claude-fable"
         elif provider in ("google", "gemini"):
             return "gemini-3-8-flash"
-        return "gpt-6-astra"
+        return "gpt-5"
 
     def _resolve_api_model(self, provider: str, model: str) -> str:
-        """Map user-selected 2026 UI model aliases to active API model endpoints"""
+        """Map user-selected catalog model aliases to active API model endpoints"""
         m = (model or "").lower().strip()
         if provider == "openai":
             aliases = {
-                "gpt-6-astra": "gpt-4o",
-                "astra-cyber": "gpt-4o",
-                "astra": "gpt-4o",
-                "gpt-5-6-sol": "gpt-4o",
-                "gpt-5-6-terra": "gpt-4o"
+                "gpt-5": "gpt-4o",
+                "gpt-5-mini": "gpt-4o-mini",
+                "gpt-5-nano": "gpt-4o-mini",
+                "gpt-4.1": "gpt-4o",
+                "gpt-4.1-mini": "gpt-4o-mini",
+                "gpt-4.1-nano": "gpt-4o-mini",
+                "gpt-4o": "gpt-4o",
+                "gpt-4o-mini": "gpt-4o-mini"
             }
             return aliases.get(m, model)
         elif provider in ("anthropic", "claude"):
             aliases = {
-                "fable-5-1": "claude-3-5-sonnet-20241022",
-                "claude-opus-5": "claude-3-5-sonnet-20241022",
-                "claude-3-7-sonnet": "claude-3-5-sonnet-20241022"
+                "claude-fable": "claude-3-5-sonnet-20241022",
+                "claude-opus": "claude-3-5-sonnet-20241022",
+                "claude-sonnet": "claude-3-5-sonnet-20241022",
+                "claude-haiku": "claude-3-5-haiku-20241022"
             }
             return aliases.get(m, model)
         elif provider in ("google", "gemini"):
             aliases = {
                 "gemini-3-8-flash": "gemini-2.0-flash",
+                "gemini-3-8-live": "gemini-2.0-flash",
+                "gemini-3-8-live-extended-thinking": "gemini-2.0-flash",
                 "gemini-3-7-flash": "gemini-2.0-flash",
-                "gemini-3-6-high": "gemini-2.0-flash"
+                "gemini-3-6-flash": "gemini-2.0-flash",
+                "gemini-3-5-flash": "gemini-2.0-flash"
             }
             return aliases.get(m, model)
         return model

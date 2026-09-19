@@ -223,6 +223,83 @@ export default function ConfigModal({ config, onSave, onClose }) {
             </div>
           </div>
 
+          {/* AI Pentest Agents Section */}
+          <div style={{ borderTop: '1px solid #262626', paddingTop: '0.875rem', marginTop: '0.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+              <div>
+                <span style={{ fontSize: '0.8125rem', fontWeight: 800, color: '#f5f5f5', fontFamily: 'var(--font-mono)' }}>
+                  🤖 AI PENTEST AGENTS & ETHICAL HACKERS
+                </span>
+                <p style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', margin: 0 }}>
+                  Enable autonomous LLM pentest agents for OpenAI, Claude, or Gemini
+                </p>
+              </div>
+
+              <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                <input 
+                  type="checkbox"
+                  name="ai_agents_enabled"
+                  checked={formData.ai_agents_enabled || false}
+                  onChange={handleChange}
+                  style={{ width: '16px', height: '16px', accentColor: '#16a34a' }}
+                />
+                <span style={{ fontSize: '0.75rem', color: formData.ai_agents_enabled ? '#4ade80' : 'var(--text-muted)', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>
+                  {formData.ai_agents_enabled ? 'ENABLED' : 'DISABLED'}
+                </span>
+              </label>
+            </div>
+
+            {formData.ai_agents_enabled && (
+              <div style={{ background: '#0a0a0a', padding: '0.875rem', borderRadius: '0.25rem', border: '1px solid #262626', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                  <div>
+                    <label style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', display: 'block', marginBottom: '0.25rem' }}>LLM PROVIDER</label>
+                    <select 
+                      name="ai_provider"
+                      value={formData.ai_provider || 'openai'}
+                      onChange={(e) => {
+                        const prov = e.target.value;
+                        const defaultModels = { openai: 'gpt-4o', anthropic: 'claude-3-5-sonnet-20241022', google: 'gemini-2.0-flash' };
+                        setFormData(prev => ({ ...prev, ai_provider: prov, ai_model: defaultModels[prov] || 'gpt-4o' }));
+                      }}
+                      style={{ width: '100%', padding: '0.4375rem', backgroundColor: '#141414', border: '1px solid #333', borderRadius: '0.25rem', color: '#fff', fontSize: '0.75rem', fontFamily: 'var(--font-mono)' }}
+                    >
+                      <option value="openai">OpenAI (ChatGPT)</option>
+                      <option value="anthropic">Anthropic (Claude)</option>
+                      <option value="google">Google (Gemini)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', display: 'block', marginBottom: '0.25rem' }}>TARGET MODEL</label>
+                    <input 
+                      type="text"
+                      name="ai_model"
+                      value={formData.ai_model || ''}
+                      onChange={handleChange}
+                      placeholder="e.g. gpt-4o, claude-3-5-sonnet, gemini-2.0-flash"
+                      style={{ width: '100%', padding: '0.4375rem', backgroundColor: '#141414', border: '1px solid #333', borderRadius: '0.25rem', color: '#fff', fontSize: '0.75rem', fontFamily: 'var(--font-mono)' }}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', display: 'block', marginBottom: '0.25rem' }}>PROVIDER API KEY (OPTIONAL - SIMULATED IF BLANK)</label>
+                  <input 
+                    type="password"
+                    name="ai_api_key"
+                    value={formData.ai_api_key || ''}
+                    onChange={handleChange}
+                    placeholder="sk-..."
+                    style={{ width: '100%', padding: '0.4375rem', backgroundColor: '#141414', border: '1px solid #333', borderRadius: '0.25rem', color: '#fff', fontSize: '0.75rem', fontFamily: 'var(--font-mono)' }}
+                  />
+                </div>
+
+              </div>
+            )}
+          </div>
+
           {/* Form Actions */}
           <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1rem', marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.75rem' }}>
             <button type="button" className="btn btn-secondary" onClick={onClose}>

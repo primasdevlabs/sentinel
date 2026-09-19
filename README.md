@@ -250,6 +250,25 @@ Interactive HTML reports contain:
 - Detailed finding tracebacks and raw payload details
 - Target metadata and total execution duration
 
+### AI Pentest Agents & Ethical Hackers (Optional)
+
+Sentinel features 12 AI Pentest Agent personas covering all 12 security domains. Agents can be enabled directly in the Web UI Config Lab or configured in Python using OpenAI (ChatGPT), Anthropic (Claude), or Google (Gemini).
+
+| Sector Code | AI Agent Persona | Specialization & Role |
+| :--- | :--- | :--- |
+| `iam` | **CipherSentinel** | Identity, Auth & Session Ethical Hacker |
+| `rbac` | **PrivEscHunter** | Authorization & Privilege Escalation Expert |
+| `multitenancy` | **ScopeBreaker** | Data Isolation & Multi-Tenancy Pentester |
+| `business_logic` | **LogicWrecker** | Workflow State Machine & Business Logic Exploiter |
+| `file_security` | **PayloadInjector** | File Upload & Executable Payload Specialist |
+| `api_security` | **APIGhost** | OWASP API Top 10 Penetration Tester |
+| `rate_limit` | **ThrottlerX** | Abuse Prevention & Throttle Penetration Tester |
+| `crypto` | **EntropyZero** | Cryptography & JWT Vulnerability Specialist |
+| `audit` | **LogGhost** | Logging Integrity & Forensics Penetration Tester |
+| `supply_chain` | **DepCheck** | Dependency Security & SBOM Auditor |
+| `infrastructure` | **DebugBreaker** | Deployment Security & Misconfiguration Pentester |
+| `human_process` | **OpSecHunter** | Human Factors & Operational Security Auditor |
+
 ---
 
 ## Advanced Usage

@@ -7,7 +7,7 @@ import FindingsTable from './components/FindingsTable';
 import ConfigModal from './components/ConfigModal';
 import JsonViewerModal from './components/JsonViewerModal';
 import HtmlReportModal from './components/HtmlReportModal';
-import { initialModules, initialConfig, sampleFindings } from './data/initialData';
+import { initialModules, initialConfig, sampleFindings, aiPentestAgents } from './data/initialData';
 
 export default function App() {
   const [modules, setModules] = useState(initialModules);
@@ -75,11 +75,20 @@ export default function App() {
       const currentMod = selectedMods[currentStep];
       const timeStr = new Date().toLocaleTimeString();
 
-      setLogs(prev => [
-        ...prev,
-        { time: timeStr, text: `PROBING SECTOR [${currentMod.code.toUpperCase()}]: ${currentMod.name}...`, type: 'info' },
-        { time: timeStr, text: `[TELEMETRY] Executing attack vector probes for ${currentMod.name}...`, type: 'info' }
-      ]);
+      if (config.ai_agents_enabled) {
+        const agent = aiPentestAgents.find(a => a.code === currentMod.code);
+        setLogs(prev => [
+          ...prev,
+          { time: timeStr, text: `🤖 [AI AGENT DEPLOYED] ${agent ? agent.name : 'AI Ethical Hacker'} engaged on sector [${currentMod.code.toUpperCase()}]`, type: 'info' },
+          { time: timeStr, text: `[LLM PROBE] Provider: ${config.ai_provider.toUpperCase()} | Model: ${config.ai_model} | Persona: Ethical Penetration Tester`, type: 'info' }
+        ]);
+      } else {
+        setLogs(prev => [
+          ...prev,
+          { time: timeStr, text: `PROBING SECTOR [${currentMod.code.toUpperCase()}]: ${currentMod.name}...`, type: 'info' },
+          { time: timeStr, text: `[TELEMETRY] Executing attack vector probes for ${currentMod.name}...`, type: 'info' }
+        ]);
+      }
 
       // Add a simulated finding occasionally
       if (currentStep % 2 === 0) {

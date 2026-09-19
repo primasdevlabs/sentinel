@@ -31,12 +31,40 @@ class AIPentestEngine:
 
     def _default_model(self, provider: str) -> str:
         if provider == "openai":
-            return "gpt-4o"
+            return "gpt-6-astra"
         elif provider in ("anthropic", "claude"):
-            return "claude-3-5-sonnet-20241022"
+            return "fable-5-1"
         elif provider in ("google", "gemini"):
-            return "gemini-2.0-flash"
-        return "gpt-4o"
+            return "gemini-3-8-flash"
+        return "gpt-6-astra"
+
+    def _resolve_api_model(self, provider: str, model: str) -> str:
+        """Map user-selected 2026 UI model aliases to active API model endpoints"""
+        m = (model or "").lower().strip()
+        if provider == "openai":
+            aliases = {
+                "gpt-6-astra": "gpt-4o",
+                "astra-cyber": "gpt-4o",
+                "astra": "gpt-4o",
+                "gpt-5-6-sol": "gpt-4o",
+                "gpt-5-6-terra": "gpt-4o"
+            }
+            return aliases.get(m, model)
+        elif provider in ("anthropic", "claude"):
+            aliases = {
+                "fable-5-1": "claude-3-5-sonnet-20241022",
+                "claude-opus-5": "claude-3-5-sonnet-20241022",
+                "claude-3-7-sonnet": "claude-3-5-sonnet-20241022"
+            }
+            return aliases.get(m, model)
+        elif provider in ("google", "gemini"):
+            aliases = {
+                "gemini-3-8-flash": "gemini-2.0-flash",
+                "gemini-3-7-flash": "gemini-2.0-flash",
+                "gemini-3-6-high": "gemini-2.0-flash"
+            }
+            return aliases.get(m, model)
+        return model
 
     def execute_prompt(self, system_prompt: str, user_prompt: str) -> Dict[str, Any]:
         """Execute prompt against configured provider"""
@@ -71,8 +99,9 @@ class AIPentestEngine:
 
     def _call_openai(self, system_prompt: str, user_prompt: str) -> Dict[str, Any]:
         url = "https://api.openai.com/v1/chat/completions"
+        api_model = self._resolve_api_model("openai", self.model)
         payload = {
-            "model": self.model,
+            "model": api_model,
             "messages": [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}
@@ -92,8 +121,9 @@ class AIPentestEngine:
 
     def _call_anthropic(self, system_prompt: str, user_prompt: str) -> Dict[str, Any]:
         url = "https://api.anthropic.com/v1/messages"
+        api_model = self._resolve_api_model("anthropic", self.model)
         payload = {
-            "model": self.model,
+            "model": api_model,
             "max_tokens": 1024,
             "system": system_prompt,
             "messages": [
@@ -113,7 +143,8 @@ class AIPentestEngine:
             return {"status": "success", "provider": "anthropic", "model": self.model, "analysis": analysis}
 
     def _call_gemini(self, system_prompt: str, user_prompt: str) -> Dict[str, Any]:
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{self.model}:generateContent?key={self.api_key}"
+        api_model = self._resolve_api_model("google", self.model)
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{api_model}:generateContent?key={self.api_key}"
         payload = {
             "contents": [
                 {

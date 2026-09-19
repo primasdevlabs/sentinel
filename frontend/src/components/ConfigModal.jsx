@@ -275,30 +275,33 @@ export default function ConfigModal({ config, onSave, onClose }) {
                     <label style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', display: 'block', marginBottom: '0.25rem' }}>TARGET MODEL</label>
                     <select 
                       name="ai_model"
-                      value={formData.ai_model || 'gpt-4o'}
+                      value={formData.ai_model || 'gpt-6-astra'}
                       onChange={handleChange}
                       style={{ width: '100%', padding: '0.4375rem', backgroundColor: '#141414', border: '1px solid #333', borderRadius: '0.25rem', color: '#fff', fontSize: '0.75rem', fontFamily: 'var(--font-mono)' }}
                     >
                       {formData.ai_provider === 'openai' && (
                         <>
-                          <option value="gpt-4o">GPT-4o (Strongest Flagship)</option>
+                          <option value="gpt-6-astra">GPT-6 Astra (Flagship Cyber/Agentic - Sept 2026)</option>
+                          <option value="gpt-5-6-sol">GPT-5.6 Sol (Deep Coding & Pentest - 2026)</option>
+                          <option value="gpt-5-6-terra">GPT-5.6 Terra (Balanced Professional - 2026)</option>
                           <option value="o3-mini">o3-mini (High Reasoning)</option>
-                          <option value="astra-cyber">Astra (Cyber Intelligence Model)</option>
-                          <option value="gpt-4o-mini">GPT-4o Mini (Mid Tier)</option>
+                          <option value="gpt-4o">GPT-4o (Legacy Flagship)</option>
                         </>
                       )}
                       {formData.ai_provider === 'anthropic' && (
                         <>
-                          <option value="claude-3-5-sonnet-20241022">Claude 3.5 Sonnet (Strongest)</option>
-                          <option value="fable-5-1">Fable 5.1 (Mid/High Reasoning)</option>
-                          <option value="claude-3-5-haiku-20241022">Claude 3.5 Haiku (Mid Tier)</option>
+                          <option value="fable-5-1">Claude Fable 5.1 (Pinnacle Mythos Class - Sept 2026)</option>
+                          <option value="claude-opus-5">Claude Opus 5 (High Stamina Frontier - 2026)</option>
+                          <option value="claude-3-7-sonnet">Claude 3.7 Sonnet (Hybrid Extended Thinking)</option>
+                          <option value="claude-3-5-sonnet-20241022">Claude 3.5 Sonnet (Legacy Standard)</option>
                         </>
                       )}
                       {formData.ai_provider === 'google' && (
                         <>
-                          <option value="gemini-3-6-high">Gemini 3.6 High (Strongest Ultra)</option>
-                          <option value="gemini-2-0-flash">Gemini 2.0 Flash (Fast Mid/High)</option>
-                          <option value="gemini-1-5-pro">Gemini 1.5 Pro (High Context)</option>
+                          <option value="gemini-3-8-flash">Gemini 3.8 Flash (Workhorse Flagship - Sept 2026)</option>
+                          <option value="gemini-3-7-flash">Gemini 3.7 Flash (High Performance - 2026)</option>
+                          <option value="gemini-3-6-high">Gemini 3.6 High (Ultra Multimodal Reasoning)</option>
+                          <option value="gemini-2-0-flash">Gemini 2.0 Flash (Fast Mid Tier)</option>
                         </>
                       )}
                     </select>

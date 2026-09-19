@@ -3,10 +3,7 @@ Module 8: Cryptography & Secrets Management
 Tests cryptographic implementations and secrets handling
 """
 
-try:
-    from base_test import BaseSecurityTest, Severity
-except ImportError:
-    from sentinel.base_test import BaseSecurityTest, Severity
+from base_test import BaseSecurityTest, Severity
 
 
 class CryptoSecurityTests(BaseSecurityTest):

@@ -3,10 +3,7 @@ Module 3: Multi-Tenancy & Data Isolation
 Tests tenant isolation, data scoping, and cross-tenant access prevention
 """
 
-try:
-    from base_test import BaseSecurityTest, Severity
-except ImportError:
-    from sentinel.base_test import BaseSecurityTest, Severity
+from base_test import BaseSecurityTest, Severity
 
 
 class MultiTenancyTests(BaseSecurityTest):

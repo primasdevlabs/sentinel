@@ -3,10 +3,7 @@ Module 4: Business Logic & Workflow Integrity
 Tests workflow state machines, business rules, concurrency, parameter tampering, and logic-level vulnerabilities
 """
 
-try:
-    from base_test import BaseSecurityTest, Severity
-except ImportError:
-    from sentinel.base_test import BaseSecurityTest, Severity
+from base_test import BaseSecurityTest, Severity
 import time
 import concurrent.futures
 
@@ -390,7 +387,7 @@ class BusinessLogicTests(BaseSecurityTest):
             if r and r.status_code == 200:
                 response_data = r.json()
                 # Verify if server accepted the client-supplied timestamp
-                if any(response_data.get(k) == test['payload'].get(k) for k in ['created_at', 'expires_at']):
+                if isinstance(response_data, dict) and any(response_data.get(k) == test['payload'].get(k) for k in ['created_at', 'expires_at']):
                     self.log(Severity.HIGH,
                             f"Temporal manipulation vulnerability: {test['description']}",
                             {"endpoint": test['endpoint'], "payload": test['payload']})

@@ -3,10 +3,7 @@ Module 5: File & Upload Security
 Tests file upload restrictions, path traversal, double extensions, and execution vector protections.
 """
 
-try:
-    from base_test import BaseSecurityTest, Severity
-except ImportError:
-    from sentinel.base_test import BaseSecurityTest, Severity
+from base_test import BaseSecurityTest, Severity
 
 
 class FileSecurityTests(BaseSecurityTest):

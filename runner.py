@@ -4,40 +4,29 @@ Orchestrates all security test modules and generates comprehensive reports
 """
 
 import sys
+import os
 import json
 import argparse
 from datetime import datetime
-from typing import Dict, List
+from typing import Dict, List, Optional
 import yaml
 
-try:
-    from base_test import Severity, Finding
-    from modules.iam_tests import IAMSecurityTests
-    from modules.rbac_tests import RBACSecurityTests
-    from modules.multitenancy_tests import MultiTenancyTests
-    from modules.business_logic_tests import BusinessLogicTests
-    from modules.file_security_tests import FileSecurityTests
-    from modules.api_security_tests import APISecurityTests
-    from modules.rate_limit_tests import RateLimitTests
-    from modules.crypto_tests import CryptoSecurityTests
-    from modules.audit_tests import AuditSecurityTests
-    from modules.supply_chain_tests import SupplyChainTests
-    from modules.infrastructure_tests import InfrastructureTests
-    from modules.human_process_tests import HumanProcessTests
-except ImportError:
-    from sentinel.base_test import Severity, Finding
-    from sentinel.modules.iam_tests import IAMSecurityTests
-    from sentinel.modules.rbac_tests import RBACSecurityTests
-    from sentinel.modules.multitenancy_tests import MultiTenancyTests
-    from sentinel.modules.business_logic_tests import BusinessLogicTests
-    from sentinel.modules.file_security_tests import FileSecurityTests
-    from sentinel.modules.api_security_tests import APISecurityTests
-    from sentinel.modules.rate_limit_tests import RateLimitTests
-    from sentinel.modules.crypto_tests import CryptoSecurityTests
-    from sentinel.modules.audit_tests import AuditSecurityTests
-    from sentinel.modules.supply_chain_tests import SupplyChainTests
-    from sentinel.modules.infrastructure_tests import InfrastructureTests
-    from sentinel.modules.human_process_tests import HumanProcessTests
+# Ensure root directory is importable
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from base_test import Severity, Finding
+from modules.iam_tests import IAMSecurityTests
+from modules.rbac_tests import RBACSecurityTests
+from modules.multitenancy_tests import MultiTenancyTests
+from modules.business_logic_tests import BusinessLogicTests
+from modules.file_security_tests import FileSecurityTests
+from modules.api_security_tests import APISecurityTests
+from modules.rate_limit_tests import RateLimitTests
+from modules.crypto_tests import CryptoSecurityTests
+from modules.audit_tests import AuditSecurityTests
+from modules.supply_chain_tests import SupplyChainTests
+from modules.infrastructure_tests import InfrastructureTests
+from modules.human_process_tests import HumanProcessTests
 
 
 class SecurityTestSuite:
@@ -46,8 +35,8 @@ class SecurityTestSuite:
     def __init__(self, config: Dict):
         self.config = config
         self.all_findings: List[Finding] = []
-        self.start_time = None
-        self.end_time = None
+        self.start_time: datetime = datetime.now()
+        self.end_time: datetime = datetime.now()
         
         # Initialize all test modules
         self.modules = {
@@ -65,7 +54,7 @@ class SecurityTestSuite:
             'human_process': HumanProcessTests(config)
         }
     
-    def run_all_tests(self, selected_modules: List[str] = None):
+    def run_all_tests(self, selected_modules: Optional[List[str]] = None):
         """Run all or selected test modules"""
         self.start_time = datetime.now()
         
@@ -426,7 +415,7 @@ class SecurityTestSuite:
         print(f"[+] HTML report exported to: {filename}")
 
 
-def load_config(config_file: str = None) -> Dict:
+def load_config(config_file: Optional[str] = None) -> Dict:
     """Load configuration from file or use defaults"""
     if config_file:
         with open(config_file, 'r') as f:

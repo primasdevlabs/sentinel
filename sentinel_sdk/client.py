@@ -129,7 +129,7 @@ class SentinelClient:
         if not severity:
             return self.last_results
             
-        target_val = severity.value if isinstance(severity, Severity) else str(severity).lower()
+        target_val = severity.value if isinstance(severity, Severity) else severity.lower()
         return [f for f in self.last_results if f.severity.value == target_val]
 
     def calculate_risk_score(self) -> int:

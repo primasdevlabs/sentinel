@@ -3,10 +3,7 @@ Module 6: API Security (OWASP API Top 10)
 Tests API-specific vulnerabilities and attack vectors
 """
 
-try:
-    from base_test import BaseSecurityTest, Severity
-except ImportError:
-    from sentinel.base_test import BaseSecurityTest, Severity
+from base_test import BaseSecurityTest, Severity
 import time
 
 

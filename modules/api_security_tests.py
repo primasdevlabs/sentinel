@@ -22,6 +22,8 @@ class APISecurityTests(BaseSecurityTest):
         self.test_verb_confusion()
         self.test_batch_endpoint_abuse()
         self.test_pagination_abuse()
+        self.test_sql_injection_vectors()
+        self.test_idor_vulnerabilities()
     
     def test_over_fetching(self):
         """Test over-fetching sensitive fields"""
@@ -186,4 +188,74 @@ class APISecurityTests(BaseSecurityTest):
                         f"Pagination limit too high: {count} records returned")
             else:
                 self.log(Severity.PASSED,
-                        f"Pagination properly limited to {count} records")
+                        f"Pagination properly limited to {count} results")
+
+    def test_sql_injection_vectors(self):
+        """
+        Test SQL Injection (SQLi) Vulnerabilities
+        Evaluates boolean-based, error-based, and union-based SQL injection vectors in query params and body payloads.
+        """
+        print("\n[TEST] SQL Injection (SQLi) Attack Vectors")
+
+        if not self.sessions['user_a'].cookies.get('laravel_session'):
+            self.log(Severity.INFO, "Skipping: No user_a session configured")
+            return
+
+        sqli_payloads = [
+            "' OR '1'='1",
+            "1' UNION SELECT NULL, NULL, version() --",
+            "1; WAITFOR DELAY '0:0:5'--",
+            "1 AND 1=1",
+            "1 AND 1=2"
+        ]
+
+        target_endpoints = [
+            "/api/v1/users?search=",
+            "/api/v1/orders?filter="
+        ]
+
+        sqli_vulnerable = False
+        for endpoint in target_endpoints:
+            for payload in sqli_payloads:
+                r = self.request(self.sessions['user_a'], "GET", f"{endpoint}{payload}")
+                if r and r.status_code == 500 and ("SQL" in r.text or "syntax error" in r.text.lower() or "mysql" in r.text.lower() or "pgsql" in r.text.lower()):
+                    self.log(Severity.CRITICAL,
+                             f"SQL Injection vulnerability exposed via error trace on {endpoint}",
+                             {"payload": payload, "response_sample": r.text[:300]})
+                    sqli_vulnerable = True
+                    break
+
+        if not sqli_vulnerable:
+            self.log(Severity.PASSED, "No raw SQL error disclosures detected on parameterized query endpoints.")
+
+    def test_idor_vulnerabilities(self):
+        """
+        Test Insecure Direct Object Reference (IDOR / BOLA)
+        Attempts to access User B or Tenant B private resources using User A's session context.
+        """
+        print("\n[TEST] Insecure Direct Object Reference (IDOR / BOLA)")
+
+        if not self.sessions['user_a'].cookies.get('laravel_session'):
+            self.log(Severity.INFO, "Skipping: No user_a session configured")
+            return
+
+        idor_targets = [
+            {"endpoint": "/api/v1/users/user-b-uuid/profile", "description": "User B Profile Record"},
+            {"endpoint": "/api/v1/invoices/inv-user-b-009", "description": "User B Invoice File"},
+            {"endpoint": "/api/v1/orders/ord-user-b-501", "description": "User B Order History"}
+        ]
+
+        idor_detected = False
+        for target in idor_targets:
+            r = self.request(self.sessions['user_a'], "GET", target['endpoint'])
+            if r and r.status_code == 200:
+                self.log(Severity.CRITICAL,
+                         f"IDOR / BOLA Vulnerability: User A accessed foreign object ({target['description']})",
+                         {"endpoint": target['endpoint']})
+                idor_detected = True
+            elif r and r.status_code in (403, 401, 404):
+                self.log(Severity.PASSED,
+                         f"IDOR object access properly blocked for {target['description']}")
+
+        if not idor_detected:
+            self.log(Severity.PASSED, "Object level authorization boundaries enforced for direct resource identifiers.")

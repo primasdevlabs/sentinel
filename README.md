@@ -232,23 +232,51 @@ Interactive HTML reports contain:
 
 ## Advanced Usage
 
-### Python Integration
+### Python SDK (`sentinel_sdk`)
 
-Import Sentinel directly into custom test automation scripts:
+Sentinel includes a native Python SDK for CI/CD pipeline integration, automated security quality gates, and `pytest` execution. See [SDK.md](SDK.md) for full API reference and detailed use cases.
+
+#### Installation
+
+```bash
+pip install -e .
+```
+
+#### Quick Usage
 
 ```python
-from runner import SecurityTestSuite
+from sentinel_sdk import SentinelClient, SentinelConfig, SecurityAssertionError
 
-config = {
-    'base_url': 'http://localhost:8000',
-    'admin_session': 'your_session_cookie',
-    'verbose': True
-}
+# Configure and run client
+config = SentinelConfig(base_url="http://127.0.0.1:8000", verbose=True)
+client = SentinelClient(config)
 
-suite = SecurityTestSuite(config)
-suite.run_all_tests(['iam', 'rbac'])
-suite.export_json('report.json')
+# Run security modules
+client.run_modules(["iam", "rbac", "business_logic"])
+
+# Export HTML report
+client.export_html("sdk_report.html")
+
+# CI/CD Quality Gate Assertion
+client.assert_no_critical_vulnerabilities()
 ```
+
+#### Pytest Integration
+
+```python
+import pytest
+from sentinel_sdk import SentinelClient, SentinelConfig
+
+@pytest.fixture
+def sentinel():
+    config = SentinelConfig(base_url="http://127.0.0.1:8000")
+    return SentinelClient(config)
+
+def test_iam_compliance(sentinel):
+    findings = sentinel.run_modules(["iam"])
+    assert not any(f.severity.value == "critical" for f in findings)
+```
+
 
 ### Extending with Custom Modules
 

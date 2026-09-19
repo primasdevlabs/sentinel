@@ -283,6 +283,7 @@ export default function ConfigModal({ config, onSave, onClose }) {
                         <>
                           <option value="gpt-4o">GPT-4o (Strongest Flagship)</option>
                           <option value="o3-mini">o3-mini (High Reasoning)</option>
+                          <option value="astra-cyber">Astra (Cyber Intelligence Model)</option>
                           <option value="gpt-4o-mini">GPT-4o Mini (Mid Tier)</option>
                         </>
                       )}
@@ -297,7 +298,7 @@ export default function ConfigModal({ config, onSave, onClose }) {
                         <>
                           <option value="gemini-3-6-high">Gemini 3.6 High (Strongest Ultra)</option>
                           <option value="gemini-2-0-flash">Gemini 2.0 Flash (Fast Mid/High)</option>
-                          <option value="astra-pentest">Astra (Cyber Intelligence Model)</option>
+                          <option value="gemini-1-5-pro">Gemini 1.5 Pro (High Context)</option>
                         </>
                       )}
                     </select>

@@ -119,8 +119,27 @@ export const initialConfig = {
   verbose: true,
   request_timeout: 10,
   request_delay: 0.1,
-  max_rate_limit_requests: 100
+  max_rate_limit_requests: 100,
+  ai_agents_enabled: false,
+  ai_provider: 'openai',
+  ai_model: 'gpt-4o',
+  ai_api_key: ''
 };
+
+export const aiPentestAgents = [
+  { id: 'iam_specialist', name: 'CipherSentinel', code: 'iam', role: 'Identity, Auth & Session Ethical Hacker', avatar: '🕵️' },
+  { id: 'rbac_auditor', name: 'PrivEscHunter', code: 'rbac', role: 'Authorization & Privilege Escalation Expert', avatar: '🛡️' },
+  { id: 'tenant_guard', name: 'ScopeBreaker', code: 'multitenancy', role: 'Data Isolation & Multi-Tenancy Pentester', avatar: '🔒' },
+  { id: 'logic_hacker', name: 'LogicWrecker', code: 'business_logic', role: 'Workflow State Machine & Business Logic Exploiter', avatar: '⚡' },
+  { id: 'file_analyst', name: 'PayloadInjector', code: 'file_security', role: 'File Upload & Executable Payload Specialist', avatar: '📁' },
+  { id: 'api_ghost', name: 'APIGhost', code: 'api_security', role: 'OWASP API Top 10 Penetration Tester', avatar: '👻' },
+  { id: 'rate_sentinel', name: 'ThrottlerX', code: 'rate_limit', role: 'Abuse Prevention & Throttle Penetration Tester', avatar: '⏱️' },
+  { id: 'crypto_zero', name: 'EntropyZero', code: 'crypto', role: 'Cryptography & JWT Vulnerability Specialist', avatar: '🔑' },
+  { id: 'audit_tracker', name: 'LogGhost', code: 'audit', role: 'Logging Integrity & Forensics Penetration Tester', avatar: '📜' },
+  { id: 'supply_recon', name: 'DepCheck', code: 'supply_chain', role: 'Dependency Security & SBOM Auditor', avatar: '📦' },
+  { id: 'infra_hunter', name: 'DebugBreaker', code: 'infrastructure', role: 'Deployment Security & Misconfiguration Pentester', avatar: '💻' },
+  { id: 'human_ops', name: 'OpSecHunter', code: 'human_process', role: 'Human Factors & Operational Security Auditor', avatar: '🧠' }
+];
 
 export const sampleFindings = [
   {

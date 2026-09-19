@@ -223,6 +223,112 @@ export default function ConfigModal({ config, onSave, onClose }) {
             </div>
           </div>
 
+          {/* AI Pentest Agents Section */}
+          <div style={{ borderTop: '1px solid #262626', paddingTop: '0.875rem', marginTop: '0.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+              <div>
+                <span style={{ fontSize: '0.8125rem', fontWeight: 800, color: '#f5f5f5', fontFamily: 'var(--font-mono)' }}>
+                  🤖 AI PENTEST AGENTS & ETHICAL HACKERS
+                </span>
+                <p style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', margin: 0 }}>
+                  Enable autonomous LLM pentest agents for OpenAI, Claude, or Gemini
+                </p>
+              </div>
+
+              <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                <input 
+                  type="checkbox"
+                  name="ai_agents_enabled"
+                  checked={formData.ai_agents_enabled || false}
+                  onChange={handleChange}
+                  style={{ width: '16px', height: '16px', accentColor: '#16a34a' }}
+                />
+                <span style={{ fontSize: '0.75rem', color: formData.ai_agents_enabled ? '#4ade80' : 'var(--text-muted)', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>
+                  {formData.ai_agents_enabled ? 'ENABLED' : 'DISABLED'}
+                </span>
+              </label>
+            </div>
+
+            {formData.ai_agents_enabled && (
+              <div style={{ background: '#0a0a0a', padding: '0.875rem', borderRadius: '0.25rem', border: '1px solid #262626', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                  <div>
+                    <label style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', display: 'block', marginBottom: '0.25rem' }}>LLM PROVIDER</label>
+                    <select 
+                      name="ai_provider"
+                      value={formData.ai_provider || 'openai'}
+                      onChange={(e) => {
+                        const prov = e.target.value;
+                        const defaultModels = { openai: 'gpt-4o', anthropic: 'claude-3-5-sonnet-20241022', google: 'gemini-2.0-flash' };
+                        setFormData(prev => ({ ...prev, ai_provider: prov, ai_model: defaultModels[prov] || 'gpt-4o' }));
+                      }}
+                      style={{ width: '100%', padding: '0.4375rem', backgroundColor: '#141414', border: '1px solid #333', borderRadius: '0.25rem', color: '#fff', fontSize: '0.75rem', fontFamily: 'var(--font-mono)' }}
+                    >
+                      <option value="openai">OpenAI (ChatGPT)</option>
+                      <option value="anthropic">Anthropic (Claude)</option>
+                      <option value="google">Google (Gemini)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', display: 'block', marginBottom: '0.25rem' }}>TARGET MODEL</label>
+                    <select 
+                      name="ai_model"
+                      value={formData.ai_model || 'gpt-5'}
+                      onChange={handleChange}
+                      style={{ width: '100%', padding: '0.4375rem', backgroundColor: '#141414', border: '1px solid #333', borderRadius: '0.25rem', color: '#fff', fontSize: '0.75rem', fontFamily: 'var(--font-mono)' }}
+                    >
+                      {formData.ai_provider === 'openai' && (
+                        <>
+                          <option value="gpt-5">GPT-5 (Flagship Tier)</option>
+                          <option value="gpt-5-mini">GPT-5 mini (High Efficiency)</option>
+                          <option value="gpt-5-nano">GPT-5 nano (Fast Ultra-Light)</option>
+                          <option value="gpt-4.1">GPT-4.1 (High Capacity Reasoning)</option>
+                          <option value="gpt-4.1-mini">GPT-4.1 mini (Mid-Tier Reasoning)</option>
+                          <option value="gpt-4.1-nano">GPT-4.1 nano (Lightweight Reasoning)</option>
+                          <option value="gpt-4o">GPT-4o (Omni Flagship)</option>
+                          <option value="gpt-4o-mini">GPT-4o mini (Omni Lightweight)</option>
+                        </>
+                      )}
+                      {formData.ai_provider === 'anthropic' && (
+                        <>
+                          <option value="claude-fable">Claude Fable (Mythos/Frontier Tier)</option>
+                          <option value="claude-opus">Claude Opus (Deep Reasoning Flagship)</option>
+                          <option value="claude-sonnet">Claude Sonnet (Balanced Professional)</option>
+                          <option value="claude-haiku">Claude Haiku (Fast Lightweight)</option>
+                        </>
+                      )}
+                      {formData.ai_provider === 'google' && (
+                        <>
+                          <option value="gemini-3-8-flash">Gemini 3.8 Flash (Flagship Workhorse)</option>
+                          <option value="gemini-3-8-live">Gemini 3.8 Live (Interactive Multimodal)</option>
+                          <option value="gemini-3-8-live-extended-thinking">Gemini 3.8 Live Extended Thinking (Deep Reasoning)</option>
+                          <option value="gemini-3-7-flash">Gemini 3.7 Flash (High Performance)</option>
+                          <option value="gemini-3-6-flash">Gemini 3.6 Flash (Efficient Mid-Tier)</option>
+                          <option value="gemini-3-5-flash">Gemini 3.5 Flash (Lightweight Workhorse)</option>
+                        </>
+                      )}
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', display: 'block', marginBottom: '0.25rem' }}>PROVIDER API KEY (OPTIONAL - SIMULATED IF BLANK)</label>
+                  <input 
+                    type="password"
+                    name="ai_api_key"
+                    value={formData.ai_api_key || ''}
+                    onChange={handleChange}
+                    placeholder="sk-..."
+                    style={{ width: '100%', padding: '0.4375rem', backgroundColor: '#141414', border: '1px solid #333', borderRadius: '0.25rem', color: '#fff', fontSize: '0.75rem', fontFamily: 'var(--font-mono)' }}
+                  />
+                </div>
+
+              </div>
+            )}
+          </div>
+
           {/* Form Actions */}
           <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1rem', marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.75rem' }}>
             <button type="button" className="btn btn-secondary" onClick={onClose}>

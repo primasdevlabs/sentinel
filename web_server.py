@@ -9,6 +9,7 @@ import os
 import sys
 import mimetypes
 import webbrowser
+import urllib.parse
 
 DEFAULT_PORT = 8080
 FRONTEND_DIST = os.path.join(os.path.dirname(__file__), 'frontend', 'dist')
@@ -37,12 +38,16 @@ class SentinelUIHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=FRONTEND_DIST, **kwargs)
 
-    def do_GET(self):
-        # Fallback to index.html for SPA routes if requested path is not a physical file
-        req_path = self.translate_path(self.path)
-        if not os.path.exists(req_path) and not os.path.splitext(req_path)[1]:
-            self.path = '/index.html'
-        return super().do_GET()
+    def translate_path(self, path):
+        path = path.split('?', 1)[0].split('#', 1)[0]
+        path = urllib.parse.unquote(path)
+        words = [w for w in path.split('/') if w and w not in ('.', '..')]
+        target_path = os.path.join(FRONTEND_DIST, *words)
+        if os.path.isdir(target_path):
+            target_path = os.path.join(target_path, 'index.html')
+        if not os.path.exists(target_path) and not os.path.splitext(target_path)[1]:
+            target_path = os.path.join(FRONTEND_DIST, 'index.html')
+        return target_path
 
 class ReusableTCPServer(socketserver.TCPServer):
     allow_reuse_address = True

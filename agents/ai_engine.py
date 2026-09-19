@@ -139,7 +139,7 @@ class AIPentestEngine:
         }
         headers: Dict[str, str] = {
             "Content-Type": "application/json",
-            "x-api-key": str(self.api_key or ""),
+            "x-api-key": self.api_key or "",
             "anthropic-version": "2023-06-01"
         }
 

@@ -79,10 +79,12 @@ class BusinessLogicTests(BaseSecurityTest):
         ]
         
         for transition in illegal_transitions:
+            endpoint_str = str(transition['endpoint'])
+            payload_dict = transition['payload'] if isinstance(transition['payload'], dict) else {}
             # Send state modification request as a standard user
             r = self.request(self.sessions['user_a'], "PATCH",
-                           transition['endpoint'],
-                           json=transition['payload'])
+                           endpoint_str,
+                           json=payload_dict)
             
             if r and r.status_code == 200:
                 self.log(Severity.CRITICAL,
@@ -142,10 +144,13 @@ class BusinessLogicTests(BaseSecurityTest):
         ]
         
         for action in role_invalid_actions:
+            method_str = str(action['method'])
+            endpoint_str = str(action['endpoint'])
+            payload_data = action.get('payload', {})
             r = self.request(self.sessions['user_a'],
-                           action['method'],
-                           action['endpoint'],
-                           json=action.get('payload', {}))
+                           method_str,
+                           endpoint_str,
+                           json=payload_data)
             
             if r and r.status_code == 200:
                 self.log(Severity.CRITICAL,
@@ -189,9 +194,11 @@ class BusinessLogicTests(BaseSecurityTest):
         ]
         
         for attempt in downgrade_attempts:
+            endpoint_str = str(attempt['endpoint'])
+            payload_dict = attempt['payload'] if isinstance(attempt['payload'], dict) else {}
             r = self.request(self.sessions['user_a'], "PATCH",
-                           attempt['endpoint'],
-                           json=attempt['payload'])
+                           endpoint_str,
+                           json=payload_dict)
             
             if r and r.status_code == 200:
                 self.log(Severity.HIGH,
@@ -334,9 +341,11 @@ class BusinessLogicTests(BaseSecurityTest):
         ]
         
         for test in tampering_payloads:
+            endpoint_str = str(test['endpoint'])
+            payload_dict = test['payload'] if isinstance(test['payload'], dict) else {}
             r = self.request(self.sessions['user_a'], "POST",
-                           test['endpoint'],
-                           json=test['payload'])
+                           endpoint_str,
+                           json=payload_dict)
             
             if r and r.status_code == 200:
                 self.log(Severity.CRITICAL,
@@ -380,14 +389,16 @@ class BusinessLogicTests(BaseSecurityTest):
         ]
         
         for test in temporal_payloads:
+            endpoint_str = str(test['endpoint'])
+            payload_dict = test['payload'] if isinstance(test['payload'], dict) else {}
             r = self.request(self.sessions['user_a'], "POST",
-                           test['endpoint'],
-                           json=test['payload'])
+                           endpoint_str,
+                           json=payload_dict)
             
             if r and r.status_code == 200:
                 response_data = r.json()
                 # Verify if server accepted the client-supplied timestamp
-                if isinstance(response_data, dict) and any(response_data.get(k) == test['payload'].get(k) for k in ['created_at', 'expires_at']):
+                if isinstance(response_data, dict) and any(response_data.get(k) == payload_dict.get(k) for k in ['created_at', 'expires_at']):
                     self.log(Severity.HIGH,
                             f"Temporal manipulation vulnerability: {test['description']}",
                             {"endpoint": test['endpoint'], "payload": test['payload']})

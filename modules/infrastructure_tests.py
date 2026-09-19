@@ -27,7 +27,7 @@ class InfrastructureTests(BaseSecurityTest):
         r = self.request(self.sessions['unauthenticated'], "GET",
                        "/nonexistent-route-12345")
         
-        if r and "APP_KEY" in r.text or "Whoops" in r.text:
+        if r and ("APP_KEY" in r.text or "Whoops" in r.text):
             self.log(Severity.CRITICAL,
                     "Debug mode enabled in production (stack traces exposed)")
         elif r and r.status_code == 404:

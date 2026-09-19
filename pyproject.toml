@@ -33,4 +33,6 @@ sentinel = "sentinel_sdk.pytest_plugin"
 [tool.pyright]
 include = ["."]
 extraPaths = ["."]
+reportMissingImports = "none"
+reportMissingModuleSource = "none"
 
